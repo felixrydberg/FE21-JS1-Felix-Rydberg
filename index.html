@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>felix Weather app</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">   
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="grid-container">
+        <header>
+            <figure class="form-search">
+                <form class="form-latlon">
+                    <input class="input-lat" type="text" name="" required placeholder="Lat:">
+                    <input class="input-lon" type="text" name="" required placeholder="Lon:">
+                    <input class="submit" type="submit" name="" value="Search">
+                </form>
+                <form class="form-city">
+                    <input class="input-city" type="text" name="" required placeholder="City, Country (Malmö,SE)">
+                    <input class="submit" type="submit" name="" value="Search">
+                </form>
+            </figure>
+        </header>
+        <main>
+            <article class="article-today"></article>
+        </main>
+    </div>
+    <script src="js/anime.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
