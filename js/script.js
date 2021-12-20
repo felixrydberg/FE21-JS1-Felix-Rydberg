@@ -1,31 +1,38 @@
 // Add event listeners
 document.querySelector("header .form-latlon").addEventListener('submit', function(event){event.preventDefault(); usersearch("lat")});
 document.querySelector("header .form-city").addEventListener('submit', function(event){event.preventDefault();  usersearch("city")});
-
+let searched=false;
+width = 0;
 
 // Skickar dem olika requesten till fetchURL, skapar också animationen
 function usersearch(type) {
-    if(type==="lat"){
-        // Info från lat lon formen
-        let lat = document.querySelector(".input-lat"),
-        lon = document.querySelector(".input-lon");
-        fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&lat=${lat}&lon=${lon}`, displaymain)
-        fetchURL(`https://api.weatherbit.io/v2.0/forecast/daily?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&lat=${lat}&lon=${lon}&days=6`, displayside)
-
-
-
-    }
-    else if(type==="city") {
-        //Info från city formen
-        let city =document.querySelector(".input-city").value;
-        fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`, displaymain)
-        fetchURL(`https://api.weatherbit.io/v2.0/forecast/daily?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}&days=6`, displayside)
-        
-
-
+    if(searched===true){
+        console.log("Searched = true");
+        resetpage(type);
     }
     else {
-        alert("Form Failed")
+        console.log("Searched = false")
+        if(type==="lat"){
+            // Info från lat lon formen
+            let lat = document.querySelector(".input-lat"),
+            lon = document.querySelector(".input-lon");
+            fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&lat=${lat}&lon=${lon}`, displaymain);
+            fetchURL(`https://api.weatherbit.io/v2.0/forecast/daily?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&lat=${lat}&lon=${lon}&days=6`, displayside);
+    
+    
+    
+        }
+        else if(type==="city") {
+            //Info från city formen
+            let city =document.querySelector(".input-city").value;
+            fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`, displaymain);
+            fetchURL(`https://api.weatherbit.io/v2.0/forecast/daily?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}&days=6`, displayside);
+        }
+        else {
+            alert("Form Failed");
+        }
+        document.body.appendChild(document.createElement("div")).classList.add("loader");
+        animation("0%");
     }
 }
 
@@ -46,15 +53,12 @@ function fetchURL(url, callback) {
 }
 
 function errors(error) {
-    console.log(error);
-}
-
-function removeanime() {
-
+    alert(error);
 }
 
 // Display current api
 function displaymain(json) {
+    searched=true;
     let article = document.querySelector(".article-today"),
     ulTitle = document.createElement("ul"),
     ulImg = document.createElement("ul"),
@@ -65,42 +69,44 @@ function displaymain(json) {
         "w-dir",
         "s-rise",
         "s-set",
-    ]
-    article.appendChild(ulTitle).classList.add("today-title")
-    article.appendChild(ulImg).classList.add("today-img")
-    article.appendChild(ulOther).classList.add("today-other")
-    ulTitle.appendChild(document.createElement("li")).innerHTML=`${json.data[0].city_name}`
-    ulTitle.appendChild(document.createElement("li")).innerHTML=`${json.data[0].temp} °C`
-    ulImg.appendChild(document.createElement("img")).src=`image/icons/${json.data[0].weather.icon}.png`
-    ulImg.appendChild(document.createElement("p")).innerHTML=`${json.data[0].weather.description}`
+    ];
+    article.appendChild(ulTitle).classList.add("today-title");
+    article.appendChild(ulImg).classList.add("today-img");
+    article.appendChild(ulOther).classList.add("today-other");
+    ulTitle.appendChild(document.createElement("li")).innerHTML=`${json.data[0].city_name}`;
+    ulTitle.appendChild(document.createElement("li")).innerHTML=`${json.data[0].temp} °C`;
+    ulImg.appendChild(document.createElement("img")).src=`image/icons/${json.data[0].weather.icon}.png`;
+    ulImg.appendChild(document.createElement("p")).innerHTML=`${json.data[0].weather.description}`;
 
 
     for(let i = 0; i < classes.length; i++){
         let li = document.createElement("li");
-        ulOther.appendChild(li).classList.add(classes[i])
+        ulOther.appendChild(li).classList.add(classes[i]);
     }
-    document.querySelector(".article-today .rh").innerHTML=`Luftfuktighet: ${json.data[0].rh} %`
-    document.querySelector(".article-today .w-speed").innerHTML=`Vindhastighet: ${json.data[0].wind_spd} m/s`
-    document.querySelector(".article-today .w-dir").innerHTML=`Riktning: ${json.data[0].wind_cdir_full}`
-    document.querySelector(".article-today .s-rise").innerHTML=`Soluppgång: ${json.data[0].sunrise}`
-    document.querySelector(".article-today .s-set").innerHTML=`Solnedgång: ${json.data[0].sunset}`
-    document.querySelector(".input-lat").value=json.data[0].lat
-    document.querySelector(".input-lon").value=json.data[0].lon
-
+    document.querySelector(".article-today .rh").innerHTML=`Luftfuktighet: ${json.data[0].rh} %`;
+    document.querySelector(".article-today .w-speed").innerHTML=`Vindhastighet: ${json.data[0].wind_spd} m/s`;
+    document.querySelector(".article-today .w-dir").innerHTML=`Riktning: ${json.data[0].wind_cdir_full}`;
+    document.querySelector(".article-today .s-rise").innerHTML=`Soluppgång: ${json.data[0].sunrise}`;
+    document.querySelector(".article-today .s-set").innerHTML=`Solnedgång: ${json.data[0].sunset}`;
+    document.querySelector(".input-lat").value=json.data[0].lat;
+    document.querySelector(".input-lon").value=json.data[0].lon;
+    width = width + 50;
+    animation(width);
 }
 
 // Display daily api
 function displayside(json) {
+    searched=true
     for(let i = 0; i < 5; i++){
         let article = document.createElement("article");
         let button = document.createElement("button");
         let ul = document.createElement("ul");
         let li = document.createElement("li")
         if(window.innerWidth > 1299) {
-            document.querySelector("header").appendChild(article).classList.add("article-days");
+            document.querySelector("header .container").appendChild(article).classList.add("article-days");
         }
         else{
-            document.querySelector("main").appendChild(article).classList.add("article-days");
+            document.querySelector("main .container").appendChild(article).classList.add("article-days");
         }
         article.classList.add(i)
         article.appendChild(ul).classList.add("days-title");
@@ -112,7 +118,7 @@ function displayside(json) {
         button.setAttribute("type", "button");
         article.addEventListener('click', function(){
             if(event.target===button){
-                displayothers(this, json, event)
+                displayothers(this, json)
                 anime({
                     targets: event.target,
                     rotateX: 180,
@@ -123,14 +129,18 @@ function displayside(json) {
             }
         })
     }
+    width = width + 50;
+    animation(width)
 }
 
 // Display other side info
-function displayothers(parent, json, event) {
+function displayothers(parent, json) {
     if(!parent.classList.contains("spawned")){
         for(let i = 0; i < document.querySelectorAll(".article-days").length; i++){
+            document.querySelectorAll(".article-days")[i].classList.remove("spawned");
             if(document.querySelectorAll(".ul-others")[i]){
                 document.querySelectorAll(".ul-others")[i].remove();
+                console.log(document.querySelectorAll(".article-days")[i])
             }
         }
         parent.classList.add("spawned")
@@ -162,6 +172,36 @@ function displayothers(parent, json, event) {
         document.querySelector(".article-days .w-speed").innerHTML=`Vindhastighet: ${json.data[index].wind_spd} m/s`
         document.querySelector(".article-days .w-dir").innerHTML=`Riktning: ${json.data[index].wind_cdir_full}`
     }
-    else {
-    }
+}
+
+function resetpage(type) {
+    document.querySelectorAll(".article-today ul")[0].remove()
+    document.querySelectorAll(".article-today ul")[0].remove()
+    document.querySelectorAll(".article-today ul")[0].remove()
+    document.querySelectorAll(".article-days")[0].remove()
+    document.querySelectorAll(".article-days")[0].remove()
+    document.querySelectorAll(".article-days")[0].remove()
+    document.querySelectorAll(".article-days")[0].remove()
+    document.querySelectorAll(".article-days")[0].remove()
+    searched=false
+    width=0;
+    usersearch(type)
+}
+
+function animation(width) {
+    anime({
+        targets: '.loader',
+        width: width+"%", // -> from '28px' to '100%',
+        easing: 'easeInOutQuad',
+        duration: 1000
+      });
+      if(width >= 100){
+        setTimeout(() => {
+        document.querySelector(".loader").style.transition="0.5s"
+        document.querySelector(".loader").style.opacity=0
+        }, 1100);
+        setTimeout(() => {
+           document.querySelector(".loader").remove() 
+        }, 2000);
+      }
 }

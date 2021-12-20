@@ -10,6 +10,13 @@ h1 {
     font-weight: lighter;
 }
 
+.loader {
+    position: absolute;
+    top: 0;
+    height: 1rem;
+    background: rgb(0, 117, 153);
+}
+
 .grid-container {
     display: grid;
     grid-template: auto auto auto / auto;
@@ -112,7 +119,7 @@ header figure form .submit {
 main {
     grid-row: 2;
     display: grid;
-    grid-template: auto auto / auto;
+    grid-template: 20rem auto / auto;
 }
 
 /* Todays Weather*/
@@ -180,17 +187,6 @@ footer {
 @media (min-width: 500px) {
     .article-today {
         background: url("../image/banner/1024x800.png");
-        background-size: cover;
-        background-position: center;
-    }
-}
-
-@media (min-width: 1024px) {
-    
-
-
-    main .article-today {
-        background: url("../image/banner/1920x1200.png");
         background-size: cover;
         background-position: center;
     }
