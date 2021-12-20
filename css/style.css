@@ -3,6 +3,8 @@
     margin: 0;
     font-family: 'Poppins', sans-serif;
     color: white;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
 }
 
 h1 {
