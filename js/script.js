@@ -1,9 +1,9 @@
 // Add event listeners
 document.querySelector("header .form-latlon").addEventListener('submit', function(event){event.preventDefault(); usersearch("lat")});
 document.querySelector("header .form-city").addEventListener('submit', function(event){event.preventDefault();  usersearch("city")});
-let searched=false;
-width = 0;
-
+let searched=false,
+width = 0,
+error = false;
 // Skickar dem olika requesten till fetchURL, skapar också animationen
 function usersearch(type) {
     if(searched===true){
@@ -52,8 +52,11 @@ function fetchURL(url, callback) {
         .catch((error) => errors(error));
 }
 
-function errors(error) {
-    alert(error);
+function errors(message) {
+    if(error=false){
+        alert(message)
+        error=true;    
+    }
 }
 
 // Display current api
@@ -97,7 +100,7 @@ function displaymain(json) {
 // Display daily api
 function displayside(json) {
     searched=true
-    for(let i = 0; i < 5; i++){
+    for(let i = 1; i < 6; i++){
         let article = document.createElement("article");
         let button = document.createElement("button");
         let ul = document.createElement("ul");
@@ -111,7 +114,7 @@ function displayside(json) {
         article.classList.add(i)
         article.appendChild(ul).classList.add("days-title");
         ul.appendChild(li);
-        li.appendChild(document.createElement("img")).src=src=`image/icons/${json.data[i].weather.icon}.png`
+        li.appendChild(document.createElement("img")).src=`image/icons/${json.data[i].weather.icon}.png`
         ul.appendChild(document.createElement("li")).innerHTML=`${json.data[i].temp} °C`
         article.appendChild(button).classList.add("button-others");
         button.innerHTML="▼";
