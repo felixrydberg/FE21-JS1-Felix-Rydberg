@@ -7,13 +7,11 @@ width = 10,
 error = false;
 //Tar användarens ip igenom en simpel api, skickar sedan vidare den till fetch url och kallar på Autoreponse
 function autosearch() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {       
-            fetchURL(`http://www.geoplugin.net/json.gp?ip=${data.ip}`, autoresponse);
-    })
+    fetchURL(`https://api.ipgeolocation.io/ipgeo?apiKey=ce71d014f78f4924b85db66afeb9177f`, autoresponse)
 }
 //Callback för autosearch (Gör fetchen, skapar också animationen) 
 function autoresponse(data) {
-    let city =`${data.geoplugin_city}, ${data.geoplugin_countryName}`;
+    let city =`${data.city}, ${data.country_name}`;
     fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`, displaymain);
     fetchURL(`https://api.weatherbit.io/v2.0/forecast/daily?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}&days=6`, displayside);
     document.body.appendChild(document.createElement("div")).classList.add("loader");
