@@ -1,15 +1,11 @@
 // Add event listeners
 document.querySelector("header .form-latlon").addEventListener('submit', function(event){event.preventDefault(); usersearch("lat")});
 document.querySelector("header .form-city").addEventListener('submit', function(event){event.preventDefault();  usersearch("city")});
-window.addEventListener("load", autosearch)
+window.addEventListener("load", function(){fetchURL(`https://api.ipgeolocation.io/ipgeo?apiKey=ce71d014f78f4924b85db66afeb9177f`, autoresponse)})
 let searched=false,
 width = 10,
 error = false;
-//Tar användarens ip igenom en simpel api, skickar sedan vidare den till fetch url och kallar på Autoreponse
-function autosearch() {
-    fetchURL(`https://api.ipgeolocation.io/ipgeo?apiKey=ce71d014f78f4924b85db66afeb9177f`, autoresponse)
-}
-//Callback för autosearch (Gör fetchen, skapar också animationen) 
+//Callback för window Eventlistener (Gör fetchen, skapar också animationen) 
 function autoresponse(data) {
     let city =`${data.city}, ${data.country_name}`;
     fetchURL(`https://api.weatherbit.io/v2.0/current?key=8a23c972397e47c09f3a3188e596ff7f&lang=sv&units=m&city=${city}`, displaymain);
@@ -69,11 +65,13 @@ function fetchURL(url, callback) {
 function errors(message) {
     if(error===false){
         alert(message)
-        error=true;    
+        error=true; 
+        document.querySelector(".loader").remove()
     }
     else{
         error=false;
         console.log("what");
+        document.querySelector(".loader").remove()
     }
 }
 
