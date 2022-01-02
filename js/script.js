@@ -64,7 +64,7 @@ function fetchURL(url, callback) {
 
 function errors(message) {
     if(error===false){
-        alert(message)
+        alert("An error has accured. Please refresh or try a diffrent City / Country")
         error=true; 
         document.querySelector(".loader").remove()
     }
