@@ -18,11 +18,10 @@ function autoresponse(data) {
 // Skickar dem olika requesten till fetchURL, skapar också animationen
 function usersearch(type) {
     if(searched===true){
-        console.log("Searched = true");
         resetpage(type);
     }
     else {
-        console.log("Searched = false")
+
         if(type==="lat"){
             // Info från lat lon formen
             let lat = document.querySelector(".input-lat"),
@@ -64,13 +63,12 @@ function fetchURL(url, callback) {
 
 function errors(message) {
     if(error===false){
-        alert("An error has accured. Please refresh or try a diffrent City / Country")
+        alert(message)
         error=true; 
         document.querySelector(".loader").remove()
     }
     else{
         error=false;
-        console.log("what");
         document.querySelector(".loader").remove()
     }
 }
@@ -130,8 +128,9 @@ function displayside(json) {
         article.classList.add(i)
         article.appendChild(ul).classList.add("days-title");
         ul.appendChild(li);
-        li.appendChild(document.createElement("img")).src=`image/icons/${json.data[i].weather.icon}.png`
-        ul.appendChild(document.createElement("li")).innerHTML=`${json.data[i].temp} °C`
+        li.appendChild(document.createElement("img")).src=`image/icons/${json.data[i].weather.icon}.png`;
+        ul.appendChild(document.createElement("li")).innerHTML=`${json.data[i].weather.description}`
+        ul.appendChild(document.createElement("li")).innerHTML=`${json.data[i].temp} °C`;
         article.appendChild(button).classList.add("button-others");
         button.innerHTML="▼";
         button.setAttribute("type", "button");
@@ -159,7 +158,6 @@ function displayothers(parent, json) {
             document.querySelectorAll(".article-days")[i].classList.remove("spawned");
             if(document.querySelectorAll(".ul-others")[i]){
                 document.querySelectorAll(".ul-others")[i].remove();
-                console.log(document.querySelectorAll(".article-days")[i])
             }
         }
         parent.classList.add("spawned")
